@@ -1,2 +1,5 @@
 # MarkOne
- MEAN Sample app 
+ 
+ <br>
+ 
+ App based on MEAN stack
