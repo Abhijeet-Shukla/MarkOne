@@ -1,14 +1,54 @@
-const http = require('http');
-const app = require('./backend/app')
+const app = require("./backend/app");
+const http = require("http");
+const { debug } = require("console");
 
-const { env } = require('process');
+const normalizePort = val => {
+  var port = parseInt(val, 10);
 
-const port = process.env.PORT || 3000;
+  if(isNaN(port)){
+    // named pipe
+    return val;
+  }
 
-app.set('port', port)
+  if(port >= 0){
+    // port Number
+    return port;
+  }
 
-const server = http.createServer(app)
+  return false;
+};
 
-server.listen(port, function(){
-  console.log("Server started...")
-});
+const onError = error =>{
+  if(error.syscall !== "listen"){
+    throw error;
+  }
+
+  const bind = typeof addr === "string" ? "pipe " + addr : "port: " + port;
+
+  switch (error.code){
+    case "EACCES":
+      console.error(bind + " requires elevated prvelages");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
+
+const onListening = () => {
+  const addr = server.address();
+  const bind = typeof addr === "string" ? "pipe " + addr : "port: " + port;
+  debug("Listening On: " + bind);
+};
+
+const port = normalizePort(process.env.port || "3000");
+app.set("port", port);
+
+const server = http.createServer(app);
+server.on("error", onError);
+server.on("listening", onListening);
+server.listen(port);
