@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use("/images", express.static(path.join("backend/images")));
 
-mong.connect('mongodb+srv://abhi:**bB015954@cluster0.ltkuxpl.mongodb.net/node-angular-app?retryWrites=true&w=majority')
+mong.connect('<mongo connection url for your cluster>')
 .then(() => {
   console.log("Connected to Mongo....");
 })
